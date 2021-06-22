@@ -1,36 +1,23 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   pipex.h                                            :+:      :+:    :+:   */
+/*   ft_strlen.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: aes-salm <aes-salm@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2021/06/22 19:49:13 by aes-salm          #+#    #+#             */
-/*   Updated: 2021/06/22 21:39:28 by aes-salm         ###   ########.fr       */
+/*   Created: 2021/06/22 21:37:22 by aes-salm          #+#    #+#             */
+/*   Updated: 2021/06/22 21:38:01 by aes-salm         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef PIPEX_H
-# define PIPEX_H
+#include "../include/pipex.h"
 
-# include <unistd.h>
-# include <stdio.h>
-# include <stdlib.h>
-# include <string.h>
-# include <signal.h>
-# include <fcntl.h>
-# include <errno.h>
-
-typedef struct s_args
+int	ft_strlen(char *s)
 {
-	char		*inFile;
-	char		*outFile;
-	char		**cmd1;
-	char		**cmd2;
-}				t_args;
-t_args			g_args;
+	int	i;
 
-int		ft_strlen(char *s);
-char	**ft_split(const char *ss, char c);
-
-#endif
+	i = 0;
+	while (s[i])
+		i++;
+	return (i);
+}
