@@ -6,7 +6,7 @@
 /*   By: aes-salm <aes-salm@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/06/22 19:48:11 by aes-salm          #+#    #+#             */
-/*   Updated: 2021/06/24 16:05:58 by aes-salm         ###   ########.fr       */
+/*   Updated: 2021/06/24 16:21:01 by aes-salm         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,7 @@ void	free_leaks(void)
 
 void	fill_args_struct(char **args, char **envp)
 {
-	int i;
+	int	i;
 
 	g_args.inFile = strdup(args[1]);
 	g_args.outFile = strdup(args[4]);
@@ -42,7 +42,7 @@ void	fill_args_struct(char **args, char **envp)
 			g_args.path = ft_substr(envp[i], 5, ft_strlen(envp[i]));
 }
 
-void setupp_redirections()
+void	setupp_redirections(void)
 {
 	g_args.in_fd = open(g_args.inFile, O_RDONLY);
 	if (g_args.in_fd == -1)
@@ -53,7 +53,8 @@ void setupp_redirections()
 	}
 	else
 		dup2(g_args.in_fd, STDIN_FILENO);
-	g_args.out_fd = open(g_args.outFile, O_WRONLY | O_CREAT | O_TRUNC, PERMISSION);
+	g_args.out_fd = open(g_args.outFile, O_WRONLY | O_CREAT | O_TRUNC, S_IRUSR
+			| S_IWUSR | S_IRGRP | S_IROTH);
 	dup2(g_args.out_fd, STDOUT_FILENO);
 }
 

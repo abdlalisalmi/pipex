@@ -6,20 +6,20 @@
 /*   By: aes-salm <aes-salm@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/06/09 10:12:04 by aes-salm          #+#    #+#             */
-/*   Updated: 2021/06/24 15:40:46 by aes-salm         ###   ########.fr       */
+/*   Updated: 2021/06/24 16:54:14 by aes-salm         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-# include "../include/pipex.h"
+#include "../include/pipex.h"
 
 char	*get_cmd_path(char *cmd)
 {
-	char **paths;
-	char *full_path;
-	char *command;
-	int i;
-	int fd;
-	
+	char	**paths;
+	char	*full_path;
+	char	*command;
+	int		i;
+	int		fd;
+
 	paths = ft_split(g_args.path, ':');
 	i = -1;
 	while (paths[++i])

@@ -6,18 +6,18 @@
 /*   By: aes-salm <aes-salm@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/06/24 15:39:28 by aes-salm          #+#    #+#             */
-/*   Updated: 2021/06/24 15:39:40 by aes-salm         ###   ########.fr       */
+/*   Updated: 2021/06/24 16:27:33 by aes-salm         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-# include "../include/pipex.h"
+#include "../include/pipex.h"
 
-void free_d_pointer(char **ptr)
+void	free_d_pointer(char **ptr)
 {
-	int i;
+	int	i;
 
 	i = -1;
 	while (ptr[++i])
 		free(ptr[i]);
-	free(ptr);	
+	free(ptr);
 }

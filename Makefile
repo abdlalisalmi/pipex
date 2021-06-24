@@ -6,7 +6,7 @@
 #    By: aes-salm <aes-salm@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2021/06/22 19:41:05 by aes-salm          #+#    #+#              #
-#    Updated: 2021/06/24 15:42:21 by aes-salm         ###   ########.fr        #
+#    Updated: 2021/06/24 17:05:14 by aes-salm         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -26,7 +26,7 @@ SRCS	= 	functions/ft_split.c \
 $(NAME) : 	$(SRCS)
 			@ $(CC) $(FLAGS) -c $(SRCS)
 			@ ar rc $(NAME) *.o
-			@ $(CC) $(FLAGS) main.c $(NAME) -o pipex
+			@ $(CC) $(FLAGS) main.c $(NAME) -o pipex -g3 -fsanitize=address
 
 all:		$(NAME)
 

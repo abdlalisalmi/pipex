@@ -6,7 +6,7 @@
 /*   By: aes-salm <aes-salm@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/06/22 19:49:13 by aes-salm          #+#    #+#             */
-/*   Updated: 2021/06/24 15:48:59 by aes-salm         ###   ########.fr       */
+/*   Updated: 2021/06/24 17:03:38 by aes-salm         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,8 +21,6 @@
 # include <fcntl.h>
 # include <errno.h>
 
-# define PERMISSION S_IRUSR | S_IWUSR | S_IRGRP | S_IROTH
-
 typedef struct s_args
 {
 	char		*inFile;
@@ -32,6 +30,7 @@ typedef struct s_args
 	char		*path;
 	int			in_fd;
 	int			out_fd;
+	int			fd[2];
 }				t_args;
 t_args			g_args;
 
