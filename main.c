@@ -6,7 +6,7 @@
 /*   By: aes-salm <aes-salm@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/06/22 19:48:11 by aes-salm          #+#    #+#             */
-/*   Updated: 2021/06/23 15:49:57 by aes-salm         ###   ########.fr       */
+/*   Updated: 2021/06/24 16:05:58 by aes-salm         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,17 @@
 void	exit_programme(char *msg, int code)
 {
 	write(2, msg, ft_strlen(msg));
+	write(2, "\n", 1);
 	exit(code);
+}
+
+void	free_leaks(void)
+{
+	free(g_args.inFile);
+	free(g_args.outFile);
+	free(g_args.path);
+	free_d_pointer(g_args.cmd1);
+	free_d_pointer(g_args.cmd2);
 }
 
 void	fill_args_struct(char **args, char **envp)
@@ -30,25 +40,6 @@ void	fill_args_struct(char **args, char **envp)
 	while (envp[++i])
 		if (!ft_strncmp(envp[i], "PATH=", 5))
 			g_args.path = ft_substr(envp[i], 5, ft_strlen(envp[i]));
-
-	//printf("infile: %s\n", g_args.inFile);
-	//printf("outfile: %s\n", g_args.outFile);
-
-	//printf("PATH: %s\n", g_args.path);
-
-	//printf("CMD1: ");
-	//i = -1;
-	//while (g_args.cmd1[++i])
-	//{
-	//	printf("%s ", g_args.cmd1[i]);
-	//}
-
-	//printf("\nCMD2: ");
-	//i = -1;
-	//while (g_args.cmd2[++i])
-	//{
-	//	printf("%s ", g_args.cmd2[i]);
-	//}
 }
 
 void setupp_redirections()
@@ -60,53 +51,21 @@ void setupp_redirections()
 		write(2, g_args.inFile, ft_strlen(g_args.inFile));
 		write(2, ": No such file or directory\n", 28);
 	}
-	//else
-		dup2(g_args.in_fd, 0);
-	g_args.out_fd = open(g_args.outFile, O_WRONLY | O_CREAT | O_TRUNC, PERMISSION);
-	dup2(g_args.out_fd, 1);
-}
-
-void excute_commands(char **envp)
-{
-	pid_t pid;
-	//pid_t pid_2;
-	int status;
-
-	pid = fork();
-	if (pid < 0)
-		exit_programme("Failed forking child..\n", EXIT_FAILURE);
-	else if (pid == 0)
-	{
-		if(g_args.in_fd != -1)
-		{
-			if (execve(get_cmd_path(g_args.cmd1[0]), g_args.cmd1, envp) == -1)
-			{
-				exit_programme(strerror(errno), EXIT_FAILURE);
-				write(2, "\n", 1);
-			}
-		}
-		exit(EXIT_FAILURE);
-	}
 	else
-	{
-		waitpid(pid, &status, 0);
-		if (execve(get_cmd_path(g_args.cmd2[0]), g_args.cmd2, envp) == -1)
-		{
-			exit_programme(strerror(errno), EXIT_FAILURE);
-			write(2, "\n", 1);
-		}
-	}
+		dup2(g_args.in_fd, STDIN_FILENO);
+	g_args.out_fd = open(g_args.outFile, O_WRONLY | O_CREAT | O_TRUNC, PERMISSION);
+	dup2(g_args.out_fd, STDOUT_FILENO);
 }
 
 int	main (int len, char **args, char **envp)
 {
 	if (len < 5)
-		exit_programme("few arguments!\n", EXIT_FAILURE);
+		exit_programme("few arguments!", EXIT_FAILURE);
 	else if (len > 5)
-		exit_programme("too many arguments!\n", EXIT_FAILURE);
+		exit_programme("too many arguments!", EXIT_FAILURE);
 	fill_args_struct(args, envp);
 	setupp_redirections();
-	excute_commands(envp);
-
+	excute(envp);
+	free_leaks();
 	return (0);
 }

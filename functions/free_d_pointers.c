@@ -1,42 +1,23 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   get_cmd_path.c                                     :+:      :+:    :+:   */
+/*   free_d_pointers.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: aes-salm <aes-salm@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2021/06/09 10:12:04 by aes-salm          #+#    #+#             */
-/*   Updated: 2021/06/24 15:40:46 by aes-salm         ###   ########.fr       */
+/*   Created: 2021/06/24 15:39:28 by aes-salm          #+#    #+#             */
+/*   Updated: 2021/06/24 15:39:40 by aes-salm         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 # include "../include/pipex.h"
 
-char	*get_cmd_path(char *cmd)
+void free_d_pointer(char **ptr)
 {
-	char **paths;
-	char *full_path;
-	char *command;
 	int i;
-	int fd;
-	
-	paths = ft_split(g_args.path, ':');
+
 	i = -1;
-	while (paths[++i])
-	{
-		command = ft_strappend("/", cmd);
-		full_path = ft_strappend(paths[i], command);
-		fd = open(full_path, O_RDONLY);
-		if (fd > -1)
-		{
-			close(fd);
-			free(command);
-			free_d_pointer(paths);
-			return (full_path);
-		}
-		free(command);
-		free(full_path);
-	}
-	free_d_pointer(paths);
-	return (NULL);
+	while (ptr[++i])
+		free(ptr[i]);
+	free(ptr);	
 }

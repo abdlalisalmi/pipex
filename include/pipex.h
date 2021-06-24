@@ -6,7 +6,7 @@
 /*   By: aes-salm <aes-salm@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/06/22 19:49:13 by aes-salm          #+#    #+#             */
-/*   Updated: 2021/06/23 15:15:25 by aes-salm         ###   ########.fr       */
+/*   Updated: 2021/06/24 15:48:59 by aes-salm         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,6 @@ typedef struct s_args
 	char		*path;
 	int			in_fd;
 	int			out_fd;
-
 }				t_args;
 t_args			g_args;
 
@@ -43,5 +42,8 @@ char	*ft_substr(char const *s, int start, int len);
 char	*ft_strappend(char *s1, char *s2);
 
 char	*get_cmd_path(char *cmd);
+void	free_d_pointer(char **ptr);
+void	exit_programme(char *msg, int code);
+void	excute(char **envp);
 
 #endif

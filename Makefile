@@ -6,7 +6,7 @@
 #    By: aes-salm <aes-salm@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2021/06/22 19:41:05 by aes-salm          #+#    #+#              #
-#    Updated: 2021/06/23 10:29:28 by aes-salm         ###   ########.fr        #
+#    Updated: 2021/06/24 15:42:21 by aes-salm         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -19,8 +19,8 @@ SRCS	= 	functions/ft_split.c \
 			functions/ft_substr.c \
 			functions/ft_strappend.c \
 			functions/get_cmd_path.c \
-
-
+			functions/execute.c \
+			functions/free_d_pointers.c \
 
 
 $(NAME) : 	$(SRCS)
