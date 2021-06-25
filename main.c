@@ -6,7 +6,7 @@
 /*   By: aes-salm <aes-salm@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/06/22 19:48:11 by aes-salm          #+#    #+#             */
-/*   Updated: 2021/06/24 16:21:01 by aes-salm         ###   ########.fr       */
+/*   Updated: 2021/06/25 12:40:00 by aes-salm         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,5 +68,5 @@ int	main (int len, char **args, char **envp)
 	setupp_redirections();
 	excute(envp);
 	free_leaks();
-	return (0);
+	return (WIFEXITED(g_args.status));
 }

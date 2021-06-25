@@ -6,7 +6,7 @@
 /*   By: aes-salm <aes-salm@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/06/22 19:49:13 by aes-salm          #+#    #+#             */
-/*   Updated: 2021/06/24 17:03:38 by aes-salm         ###   ########.fr       */
+/*   Updated: 2021/06/25 12:06:56 by aes-salm         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,6 +31,7 @@ typedef struct s_args
 	int			in_fd;
 	int			out_fd;
 	int			fd[2];
+	int			status;
 }				t_args;
 t_args			g_args;
 
