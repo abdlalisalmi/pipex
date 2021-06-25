@@ -6,53 +6,53 @@
 /*   By: aes-salm <aes-salm@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/06/24 15:33:48 by aes-salm          #+#    #+#             */
-/*   Updated: 2021/06/25 13:24:11 by aes-salm         ###   ########.fr       */
+/*   Updated: 2021/06/25 19:11:54 by aes-salm         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/pipex.h"
 
-void	execute_in_parrent(pid_t *pid_2, char **envp)
+void	execute_cmd_2(char **envp)
 {
-	// pid_t	pid_2;
-
-	*pid_2 = fork();
-	if (*pid_2 < 0)
-		exit_programme("Failed forking child..", EXIT_FAILURE);
-	else if (*pid_2 == 0)
-	{
-		close(g_args.fd[1]);
-		dup2(g_args.fd[0], STDIN_FILENO);
-		close(g_args.fd[0]);
-		if (execve(get_cmd_path(g_args.cmd2[0]), g_args.cmd2, envp) == -1)
-		{
-			write(2, "pipex: ", 7);
-			write(2, g_args.cmd2[0], ft_strlen(g_args.cmd2[0]));
-			write(2, ": command not found\n", 20);
-			// exit_programme(": command not found", 127);
-		}
-		close(g_args.out_fd);
-		exit(0);
-	}
-	// else
-	// {
-	// 	waitpid(*pid_2, &g_args.status, 0);
-	// 	exit(WIFEXITED(g_args.status));
-	// }
-}
-
-void	execute_in_child(char **envp)
-{
-	close(g_args.fd[0]);
-	dup2(g_args.fd[1], STDOUT_FILENO);
+	g_args.out_fd = open(g_args.outFile, O_WRONLY | O_CREAT | O_TRUNC, S_IRUSR
+		| S_IWUSR | S_IRGRP | S_IROTH);
+	if (g_args.out_fd == -1)
+		exit_programme(strerror(errno), 1);
 	close(g_args.fd[1]);
-	if (execve(get_cmd_path(g_args.cmd1[0]), g_args.cmd1, envp) == -1)
+	dup2(g_args.out_fd, STDOUT_FILENO);
+	dup2(g_args.fd[0], STDIN_FILENO);
+	close(g_args.fd[0]);
+	if (execve(get_cmd_path(g_args.cmd2[0]), g_args.cmd2, envp) == -1)
 	{
 		write(2, "pipex: ", 7);
-		write(2, g_args.cmd1[0], ft_strlen(g_args.cmd1[0]));
+		write(2, g_args.cmd2[0], ft_strlen(g_args.cmd2[0]));
 		exit_programme(": command not found", 127);
 	}
-	close(g_args.in_fd);
+	exit(EXIT_SUCCESS);
+}
+
+void	execute_cmd_1(char **envp)
+{
+	g_args.in_fd = open(g_args.inFile, O_RDONLY);
+	if (g_args.in_fd == -1)
+	{
+		write(2, "pipex: ", 7);
+		write(2, g_args.inFile, ft_strlen(g_args.inFile));
+		exit_programme(": No such file or directory", EXIT_FAILURE);
+	}
+	else
+	{
+		close(g_args.fd[0]);
+		dup2(g_args.in_fd, STDIN_FILENO);
+		dup2(g_args.fd[1], STDOUT_FILENO);
+		close(g_args.fd[1]);
+		if (execve(get_cmd_path(g_args.cmd1[0]), g_args.cmd1, envp) == -1)
+		{
+			write(2, "pipex: ", 7);
+			write(2, g_args.cmd1[0], ft_strlen(g_args.cmd1[0]));
+			exit_programme(": command not found", 127);
+		}
+	}
 }
 
 void	excute(char **envp)
@@ -62,20 +62,22 @@ void	excute(char **envp)
 
 	if (pipe(g_args.fd) == -1)
 		exit_programme("Failed opening the pipe..", EXIT_FAILURE);
+		
 	pid_1 = fork();
 	if (pid_1 < 0)
 		exit_programme("Failed forking child..", EXIT_FAILURE);
 	else if (pid_1 == 0)
-	{
-		if (g_args.in_fd != -1)
-			execute_in_child(envp);
-		exit(EXIT_FAILURE);
-	}
+		execute_cmd_1(envp);
 	else
-	{
 		waitpid(pid_1, &g_args.status, 0);
-		execute_in_parrent(&pid_2, envp);
+
+	pid_2 = fork();
+	if (pid_2 < 0)
+		exit_programme("Failed forking child..", EXIT_FAILURE);
+	else if (pid_2 == 0)
+		execute_cmd_2(envp);
+	else
 		waitpid(pid_2, &g_args.status, 0);
-		// dprintf(2, "%d\n", WIFEXITED(g_args.status));
-	}
+	close(g_args.fd[0]);
+	close(g_args.fd[1]);
 }

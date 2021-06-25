@@ -1,18 +1,1 @@
-Makefile
-README.md
-bash
-execute.o
-free_d_pointers.o
-ft_split.o
-ft_strappend.o
-ft_strlen.o
-ft_strncmp.o
-ft_substr.o
-functions
-get_cmd_path.o
-include
-main.c
-out
-pipex
-pipex.a
-pipex.dSYM
+       0
