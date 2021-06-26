@@ -6,7 +6,7 @@
 /*   By: aes-salm <aes-salm@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/06/24 15:33:48 by aes-salm          #+#    #+#             */
-/*   Updated: 2021/06/25 19:11:54 by aes-salm         ###   ########.fr       */
+/*   Updated: 2021/06/26 09:20:38 by aes-salm         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,9 +15,14 @@
 void	execute_cmd_2(char **envp)
 {
 	g_args.out_fd = open(g_args.outFile, O_WRONLY | O_CREAT | O_TRUNC, S_IRUSR
-		| S_IWUSR | S_IRGRP | S_IROTH);
+			| S_IWUSR | S_IRGRP | S_IROTH);
 	if (g_args.out_fd == -1)
-		exit_programme(strerror(errno), 1);
+	{
+		write(2, "pipex: ", 7);
+		write(2, strerror(errno), ft_strlen(strerror(errno)));
+		write(2, ": ", 2);
+		exit_programme(g_args.outFile, 1);
+	}
 	close(g_args.fd[1]);
 	dup2(g_args.out_fd, STDOUT_FILENO);
 	dup2(g_args.fd[0], STDIN_FILENO);
@@ -62,7 +67,6 @@ void	excute(char **envp)
 
 	if (pipe(g_args.fd) == -1)
 		exit_programme("Failed opening the pipe..", EXIT_FAILURE);
-		
 	pid_1 = fork();
 	if (pid_1 < 0)
 		exit_programme("Failed forking child..", EXIT_FAILURE);
@@ -70,14 +74,15 @@ void	excute(char **envp)
 		execute_cmd_1(envp);
 	else
 		waitpid(pid_1, &g_args.status, 0);
-
 	pid_2 = fork();
 	if (pid_2 < 0)
 		exit_programme("Failed forking child..", EXIT_FAILURE);
 	else if (pid_2 == 0)
 		execute_cmd_2(envp);
 	else
+	{
+		close(g_args.fd[0]);
+		close(g_args.fd[1]);
 		waitpid(pid_2, &g_args.status, 0);
-	close(g_args.fd[0]);
-	close(g_args.fd[1]);
+	}
 }
