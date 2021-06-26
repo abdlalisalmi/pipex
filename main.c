@@ -6,7 +6,7 @@
 /*   By: aes-salm <aes-salm@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/06/22 19:48:11 by aes-salm          #+#    #+#             */
-/*   Updated: 2021/06/25 18:57:22 by aes-salm         ###   ########.fr       */
+/*   Updated: 2021/06/26 09:38:47 by aes-salm         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,7 @@ void	free_leaks(void)
 {
 	free(g_args.inFile);
 	free(g_args.outFile);
-	free(g_args.path);
+	free(g_args.paths);
 	free_d_pointer(g_args.cmd1);
 	free_d_pointer(g_args.cmd2);
 }
@@ -39,7 +39,8 @@ void	fill_args_struct(char **args, char **envp)
 	i = -1;
 	while (envp[++i])
 		if (!ft_strncmp(envp[i], "PATH=", 5))
-			g_args.path = ft_substr(envp[i], 5, ft_strlen(envp[i]));
+			g_args.paths = ft_split(ft_substr(envp[i], 5,
+						ft_strlen(envp[i])), ':');
 }
 
 int	main (int len, char **args, char **envp)

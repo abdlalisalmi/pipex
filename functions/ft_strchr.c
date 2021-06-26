@@ -1,42 +1,29 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   get_cmd_path.c                                     :+:      :+:    :+:   */
+/*   ft_strchr.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: aes-salm <aes-salm@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2021/06/09 10:12:04 by aes-salm          #+#    #+#             */
-/*   Updated: 2021/06/26 09:38:04 by aes-salm         ###   ########.fr       */
+/*   Created: 2021/05/26 11:03:01 by aes-salm          #+#    #+#             */
+/*   Updated: 2021/06/26 09:34:03 by aes-salm         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/pipex.h"
 
-char	*get_cmd_path(char *cmd)
+char	*ft_strchr(const char *str, int c)
 {
-	char	*full_path;
-	char	*command;
+	char	*pstr;
 	int		i;
-	int		fd;
 
-	if (ft_strchr(cmd, '/'))
-		return (cmd);
-	i = -1;
-	while (g_args.paths[++i])
+	pstr = (char *)str;
+	i = 0;
+	while (i <= ft_strlen(pstr))
 	{
-		command = ft_strappend("/", cmd);
-		full_path = ft_strappend(g_args.paths[i], command);
-		fd = open(full_path, O_RDONLY);
-		if (fd > -1)
-		{
-			close(fd);
-			free(command);
-			free_d_pointer(g_args.paths);
-			return (full_path);
-		}
-		free(command);
-		free(full_path);
+		if (str[i] == c)
+			return ((char *)(str + i));
+		i++;
 	}
-	free_d_pointer(g_args.paths);
 	return (NULL);
 }

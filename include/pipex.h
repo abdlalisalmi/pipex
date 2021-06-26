@@ -6,7 +6,7 @@
 /*   By: aes-salm <aes-salm@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/06/22 19:49:13 by aes-salm          #+#    #+#             */
-/*   Updated: 2021/06/25 12:06:56 by aes-salm         ###   ########.fr       */
+/*   Updated: 2021/06/26 09:36:36 by aes-salm         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,7 @@ typedef struct s_args
 	char		*outFile;
 	char		**cmd1;
 	char		**cmd2;
-	char		*path;
+	char		**paths;
 	int			in_fd;
 	int			out_fd;
 	int			fd[2];
@@ -40,6 +40,7 @@ char	**ft_split(const char *ss, char c);
 int		ft_strncmp(const char *str1, const char *str2, int n);
 char	*ft_substr(char const *s, int start, int len);
 char	*ft_strappend(char *s1, char *s2);
+char	*ft_strchr(const char *str, int c);
 
 char	*get_cmd_path(char *cmd);
 void	free_d_pointer(char **ptr);
