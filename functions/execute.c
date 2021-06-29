@@ -6,7 +6,7 @@
 /*   By: aes-salm <aes-salm@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/06/24 15:33:48 by aes-salm          #+#    #+#             */
-/*   Updated: 2021/06/26 09:20:38 by aes-salm         ###   ########.fr       */
+/*   Updated: 2021/06/29 13:01:54 by aes-salm         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,9 +19,9 @@ void	execute_cmd_2(char **envp)
 	if (g_args.out_fd == -1)
 	{
 		write(2, "pipex: ", 7);
-		write(2, strerror(errno), ft_strlen(strerror(errno)));
+		write(2, g_args.outFile, ft_strlen(g_args.outFile));
 		write(2, ": ", 2);
-		exit_programme(g_args.outFile, 1);
+		exit_programme(strerror(errno), 1);
 	}
 	close(g_args.fd[1]);
 	dup2(g_args.out_fd, STDOUT_FILENO);
@@ -72,8 +72,6 @@ void	excute(char **envp)
 		exit_programme("Failed forking child..", EXIT_FAILURE);
 	else if (pid_1 == 0)
 		execute_cmd_1(envp);
-	else
-		waitpid(pid_1, &g_args.status, 0);
 	pid_2 = fork();
 	if (pid_2 < 0)
 		exit_programme("Failed forking child..", EXIT_FAILURE);
@@ -83,6 +81,7 @@ void	excute(char **envp)
 	{
 		close(g_args.fd[0]);
 		close(g_args.fd[1]);
+		waitpid(pid_1, &g_args.status, 0);
 		waitpid(pid_2, &g_args.status, 0);
 	}
 }
